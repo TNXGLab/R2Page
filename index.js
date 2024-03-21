@@ -6,6 +6,16 @@ if (!fs.existsSync('dist')) fs.mkdirSync('dist');
 const forceDownload = process.env.FORCE_DOWNLOAD === 'true';
 const PageUrl = process.env.PAGE_URL
 const decryptKey = process.env.DECRYPT_KEY
+
+// 遍历public目录下所有文件，复制到dist/
+const copyPublicFiles = () => {
+    const publicFiles = fs.readdirSync('public/');
+    publicFiles.forEach(file => {
+        fs.copyFileSync(`public/${file}`, `dist/${file}`);
+    })
+}
+
+
 //登录AWS，并列出所有的bucket
 const s3 = new AWS.S3({
     region: 'auto',
@@ -72,6 +82,7 @@ const downloadAsFile = (url, path) => {
 !!(async () => {
     console.log(`部分配置信息配置如下：\nPAGE_URL: ${PageUrl}\nAWS_ENDPOINT_URL: ${process.env.AWS_ENDPOINT_URL}\n是否对FileMap进行解密: ${decryptKey ? '是' : '否'}`);
     console.log('开始从R2获取文件列表...');
+    copyPublicFiles();
 
     const buckets = (await s3.listBuckets().promise()).Buckets.map(bucket => bucket.Name);
 
