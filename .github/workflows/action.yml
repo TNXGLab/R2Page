@@ -1,0 +1,33 @@
+name: action
+on:
+  schedule:
+    - cron: "0 0,2,4,6,8,10,12,14,16,18,20,22 * * *"
+  workflow_dispatch:
+
+env:
+  TZ: Asia/Shanghai
+
+jobs:
+  Crawler:
+    name: Get Data
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+
+      # 更新仓库文件，触发cf page更新
+      - name: Update UPDATE.md
+        run: |
+          echo "Last update: $(date)" > UPDATE.md
+          git config --local user.email "tnxg@outlook.jp"
+          git config --local user.name "TNXG"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          branch: master
+
+      - name: keep alive
+        uses: gautamkrishnar/keepalive-workflow@master
