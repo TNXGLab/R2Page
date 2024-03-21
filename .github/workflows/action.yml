@@ -9,7 +9,7 @@ env:
 
 jobs:
   Crawler:
-    name: Get Data
+    name: action
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -19,9 +19,11 @@ jobs:
       # 更新仓库文件，触发cf page更新
       - name: Update UPDATE.md
         run: |
-          echo "Last update: $(date)" > UPDATE.md
+          echo "Last update: $(date +'%Y-%m-%d %H:%M:%S')" > UPDATE.md
           git config --local user.email "tnxg@outlook.jp"
           git config --local user.name "TNXG"
+          git add .
+          git commit -m "Last update: $(date +'%Y-%m-%d %H:%M:%S')"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
