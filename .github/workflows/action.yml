@@ -18,7 +18,7 @@ jobs:
       - name: Update UPDATE.md
         run: |
           echo "Last update: $(date +'%Y-%m-%d %H:%M:%S')" > UPDATE.md
-          git pull origin master
+          git pull origin main
           git config --local user.email "tnxg@outlook.jp"
           git config --local user.name "TNXG"
           git add .
@@ -28,7 +28,7 @@ jobs:
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GH_TOKEN }}
-          branch: master
+          branch: main
 
       - name: keep alive
         uses: gautamkrishnar/keepalive-workflow@master
