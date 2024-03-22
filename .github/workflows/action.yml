@@ -15,11 +15,10 @@ jobs:
       - uses: actions/checkout@v2
         with:
           persist-credentials: false
-
-      # 更新仓库文件，触发cf page更新
       - name: Update UPDATE.md
         run: |
           echo "Last update: $(date +'%Y-%m-%d %H:%M:%S')" > UPDATE.md
+          git pull origin master
           git config --local user.email "tnxg@outlook.jp"
           git config --local user.name "TNXG"
           git add .
